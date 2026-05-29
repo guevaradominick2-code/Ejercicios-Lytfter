@@ -1,0 +1,5 @@
+Hola, me llamo Dominick Guevara y quiero ser un programador prontamente
+
+Hola, este es el nuevo texto que quiero agregar con el codigo
+C:\Users\Usuario\AppData\Local\Microsoft\WindowsApps\python3.13.exe c:/Users/Usuario/OneDrive/Desktop/Lyfter/Python_begginer/manipulacion_archivosHW2.py
+Hola
