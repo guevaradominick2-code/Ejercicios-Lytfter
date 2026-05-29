@@ -43,20 +43,23 @@ else:
 #3 → 6 (1 + 2 + 3)
 #12 → 78 (1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12)
 
-Number = int(input("Ingrese un número: "))
+number = int(input("Ingrese un número: "))
 total_sum = 0
 counter = 1
-while counter <= Number:
+while counter <= number:
     total_sum += counter
     counter = counter + 1
 
-print(f"La suma de los números del 1 al {Number} es: {total_sum}")
+print(f"La suma de los números del 1 al {number} es: {total_sum}")
 
 #---------------------------------------------------------------------------------------------------------------
 #Cree un diagrama de flujo que tenga un numero secreto del 1 al 10, y le pida al usuario adivinar ese número.
 # El algoritmo no debe terminar hasta que el usuario adivine el numero.
 
-secret_number = 8
+import random
+
+secret_number = random.randint(1,10)
+
 guess = int(input("Adivina el número secreto (entre 1 y 10): "))
 
 while guess != secret_number:

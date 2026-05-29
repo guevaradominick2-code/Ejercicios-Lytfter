@@ -43,6 +43,3 @@ for key in list_of_key:
 
 print(employee)
 print(60*"__")
-
-
-
