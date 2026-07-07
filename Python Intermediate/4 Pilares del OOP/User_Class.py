@@ -29,8 +29,6 @@ class RegularUser(User):
     def has_permission(self, permission):
         return permission.lower() in ["read","edit"]
 
-User1 = AdminUser("Carlos")
-
 user1 = AdminUser("Carlos")
 user2 = RegularUser("Andrea")
 

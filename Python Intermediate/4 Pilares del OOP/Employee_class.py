@@ -27,9 +27,9 @@ class Employee():
         
 
     def promote(self, increase_percentage):
-        self.salary = self.salary * (1 + increase_percentage / 100)
+        self.salary = self.salary * (increase_percentage + 1)
 
 employee_1 = Employee("Karen", 1155000)
-employee_1.promote(10)
+employee_1.promote(0.1)
 print(employee_1.salary)
 
