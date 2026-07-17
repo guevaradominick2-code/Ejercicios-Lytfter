@@ -43,14 +43,14 @@ def enter_bar(user):
     print(f"Access granted. User is {user.age} years old.")
 
 
-User_1 = User(date(2001, 8, 28))
-User_2= User(date(2021,1,1))
+user_1 = User(date(2001, 8, 28))
+user_2= User(date(2021,1,1))
 
-print(User_1.age)
-enter_bar(User_1)
+print(user_1.age)
+enter_bar(user_1)
 
-print(User_2.age)
+print(user_2.age)
 try:
-    enter_bar(User_2)
+    enter_bar(user_2)
 except ValueError as error:
     print(error)
