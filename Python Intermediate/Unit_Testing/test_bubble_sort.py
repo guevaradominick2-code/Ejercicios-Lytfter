@@ -32,8 +32,6 @@ def test_bubble_sort_empty_list():
 def test_bubble_sort_string_rejection():
 
     wrong_list = [12,15,16,"Hola"]
-
-    for i in wrong_list:
-        if i == str:
-            with pytest.raises(ValueError):
-                bs(wrong_list)
+    
+    with pytest.raises(TypeError):
+        bs(wrong_list)
