@@ -1,0 +1,18 @@
+[
+    {
+        "category": "Food",
+        "color": "#FFA500"
+    },
+    {
+        "category": "Transport",
+        "color": "#3498DB"
+    },
+    {
+        "category": "Work",
+        "color": "#AA1233"
+    },
+    {
+        "category": "Rent",
+        "color": "#FFF654"
+    }
+]
