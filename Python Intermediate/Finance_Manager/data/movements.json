@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Walmart",
+        "amount": 35000,
+        "category": "Food",
+        "movement_type": "Expense",
+        "date": "08/10/2026"
+    },
+    {
+        "title": "Salary",
+        "amount": 950000,
+        "category": "Work",
+        "movement_type": "Income",
+        "date": "08/10/2026"
+    },
+    {
+        "title": "RENT",
+        "amount": 600000.0,
+        "category": "Rent",
+        "movement_type": "Expense",
+        "date": "20/10/2026"
+    },
+    {
+        "title": "Salary",
+        "amount": 10000.0,
+        "category": "Work",
+        "movement_type": "Income",
+        "date": "01/10/2026"
+    }
+]

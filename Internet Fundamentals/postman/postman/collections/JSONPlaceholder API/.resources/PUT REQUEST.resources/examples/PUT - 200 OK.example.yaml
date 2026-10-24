@@ -1,0 +1,54 @@
+$kind: http-example
+request:
+  url: https://jsonplaceholder.typicode.com/posts/1
+  method: PUT
+  body:
+    type: json
+    content: "\r
+
+      {\r
+
+      \  \"id\": 1,\r
+
+      \  \"title\": \"Publicación modificada\",\r
+
+      \  \"body\": \"Estoy aprendiendo a actualizar datos con PUT en Postman\",\r
+
+      \  \"userId\": 1\r
+
+      }\r\n"
+response:
+  statusCode: 200
+  statusText: ""
+  headers:
+    :status: "200"
+    date: Sat, 24 Oct 2026 03:02:47 GMT
+    content-type: application/json; charset=utf-8
+    access-control-allow-credentials: "true"
+    cache-control: no-cache
+    etag: W/"87-pTFeqlYPcs3MRIX+k5xnP5lJ+RA"
+    expires: "-1"
+    pragma: no-cache
+    vary: Origin, Accept-Encoding
+    x-content-type-options: nosniff
+    x-powered-by: Express
+    x-ratelimit-limit: "3600000"
+    x-ratelimit-remaining: "3599996"
+    x-ratelimit-reset: "1792812236"
+    cf-cache-status: DYNAMIC
+    nel: '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+    report-to: '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=n8n3%2F4m8IBymO6O2OErWEHwMO1e1PnDuI9a%2BVzgXDhL6CDeutB8bRyhsUXmmaEWJ9o5OVOX1KtD1eGoYZnjqiiVhTWyOnepba1E6BfnqwSD9pq0tp1PDpgqKe4%2Bwc8zhPD4%2FFoJDEk0vXVPcgJVm"}]}'
+    content-encoding: br
+    server: cloudflare
+    cf-ray: a4f5bea1ee7ec5de-MIA
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: |-
+      {
+        "id": 1,
+        "title": "Publicación modificada",
+        "body": "Estoy aprendiendo a actualizar datos con PUT en Postman",
+        "userId": 1
+      }
+order: 1000
