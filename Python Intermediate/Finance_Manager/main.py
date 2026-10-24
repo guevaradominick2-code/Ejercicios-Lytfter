@@ -1,13 +1,39 @@
-from logic import FinanceManager
-from persistence import load_categories, load_movements
 from interfaces import main_window
 
-manager = FinanceManager()
+from logic import FinanceManager
 
-manager.categories = load_categories("data/categories.json")
-manager.movements = load_movements(
-    "data/movements.json",
-    manager.categories
+from paths import (
+    CATEGORIES_FILE,
+    MOVEMENTS_FILE
 )
 
-main_window(manager)
+from persistence import (
+    load_categories,
+    load_movements
+)
+
+
+def main():
+
+    manager = FinanceManager()
+
+    manager.categories = (
+        load_categories(
+            CATEGORIES_FILE
+        )
+    )
+
+    manager.movements = (
+        load_movements(
+            MOVEMENTS_FILE,
+            manager.categories
+        )
+    )
+
+    main_window(
+        manager
+    )
+
+
+if __name__ == "__main__":
+    main()

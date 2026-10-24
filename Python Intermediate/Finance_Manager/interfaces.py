@@ -1,6 +1,11 @@
+from datetime import date
+
 import FreeSimpleGUI as sg
 
-from logic import Category, Movement, validate_date
+from paths import (
+    CATEGORIES_FILE,
+    MOVEMENTS_FILE
+)
 
 from persistence import (
     save_categories,
@@ -8,12 +13,12 @@ from persistence import (
     export_movements_to_csv
 )
 
-
-
 def main_window(manager):
 
-    table_data, row_colors = movements_table_data(
-        manager.movements
+    table_data, row_colors = (
+        movements_table_data(
+            manager.movements
+        )
     )
 
     headings = [
@@ -35,17 +40,17 @@ def main_window(manager):
 
         [
             sg.Text(
-                f"Income: ${manager.calculate_income()}",
+                f"Income: ₡{manager.calculate_income():,.2f}",
                 key="INCOME_TOTAL"
             ),
 
             sg.Text(
-                f"Expenses: ${manager.calculate_expense()}",
+                f"Expenses: ₡{manager.calculate_expense():,.2f}",
                 key="EXPENSE_TOTAL"
             ),
 
             sg.Text(
-                f"Balance: ${manager.calculate_balance()}",
+                f"Balance: ₡{manager.calculate_balance():,.2f}",
                 key="BALANCE_TOTAL"
             )
         ],
@@ -67,7 +72,9 @@ def main_window(manager):
 
             sg.Button("Filter"),
 
-            sg.Button("Clear Filter")
+            sg.Button(
+                "Clear Filter"
+            )
         ],
 
         [
@@ -83,15 +90,31 @@ def main_window(manager):
         ],
 
         [
-            sg.Button("Add Category"),
-            sg.Button("Add Expense"),
-            sg.Button("Add Income")
+            sg.Button(
+                "Add Category"
+            ),
+
+            sg.Button(
+                "Add Expense"
+            ),
+
+            sg.Button(
+                "Add Income"
+            )
         ],
 
         [
-            sg.Button("Export CSV"),
-            sg.Button("Clear History"),
-            sg.Button("Exit")
+            sg.Button(
+                "Export CSV"
+            ),
+
+            sg.Button(
+                "Clear History"
+            ),
+
+            sg.Button(
+                "Exit"
+            )
         ]
     ]
 
@@ -102,7 +125,9 @@ def main_window(manager):
 
     while True:
 
-        event, values = window.read()
+        event, values = (
+            window.read()
+        )
 
         if event in (
             sg.WIN_CLOSED,
@@ -111,25 +136,28 @@ def main_window(manager):
 
             save_categories(
                 manager.categories,
-                "data/categories.json"
+                CATEGORIES_FILE
             )
 
             save_movements(
                 manager.movements,
-                "data/movements.json"
+                MOVEMENTS_FILE
             )
 
             break
 
-
         if event == "Add Category":
 
-            add_category_window(manager)
-
+            add_category_window(
+                manager
+            )
 
         if event == "Add Expense":
 
-            add_expense_window(manager)
+            add_movement_window(
+                manager,
+                "Expense"
+            )
 
             refresh_main_window(
                 window,
@@ -138,7 +166,10 @@ def main_window(manager):
 
         if event == "Add Income":
 
-            add_income_window(manager)
+            add_movement_window(
+                manager,
+                "Income"
+            )
 
             refresh_main_window(
                 window,
@@ -149,10 +180,15 @@ def main_window(manager):
 
             try:
 
-                filtered_movements = filter_movements(
-                    manager,
-                    values["FILTER_FROM"],
-                    values["FILTER_TO"]
+                filtered_movements = (
+                    manager.filter_movements(
+                        values[
+                            "FILTER_FROM"
+                        ],
+                        values[
+                            "FILTER_TO"
+                        ]
+                    )
                 )
 
                 refresh_main_window(
@@ -167,11 +203,15 @@ def main_window(manager):
                     str(error)
                 )
 
-
         if event == "Clear Filter":
 
-            window["FILTER_FROM"].update("")
-            window["FILTER_TO"].update("")
+            window[
+                "FILTER_FROM"
+            ].update("")
+
+            window[
+                "FILTER_TO"
+            ].update("")
 
             refresh_main_window(
                 window,
@@ -194,47 +234,76 @@ def main_window(manager):
     window.close()
 
 
-def movements_table_data(movements):
+def movements_table_data(
+    movements
+):
 
     table_data = []
     row_colors = []
 
-    for index, movement in enumerate(movements):
+    for index, movement in enumerate(
+        movements
+    ):
 
         table_data.append([
-            movement.date.strftime("%d/%m/%Y"),
+            movement.date.strftime(
+                "%d/%m/%Y"
+            ),
+
             movement.title,
-            movement.amount,
+
+            f"₡{movement.amount:,.2f}",
+
             movement.category.name,
+
             movement.movement_type
         ])
 
-        text_color = text_color_for_background(
-            movement.category.color
-        )
+        row_colors.append((
+            index,
 
-        row_colors.append(
-            (
-                index,
-                text_color,
+            text_color_for_background(
                 movement.category.color
-            )
-        )
+            ),
 
-    return table_data, row_colors
+            movement.category.color
+        ))
+
+    return (
+        table_data,
+        row_colors
+    )
 
 
-def text_color_for_background(color):
+def text_color_for_background(
+    color
+):
 
-    color = color.replace("#", "")
+    color = color.replace(
+        "#",
+        ""
+    )
 
-    red = int(color[0:2], 16)
-    green = int(color[2:4], 16)
-    blue = int(color[4:6], 16)
+    red = int(
+        color[0:2],
+        16
+    )
+
+    green = int(
+        color[2:4],
+        16
+    )
+
+    blue = int(
+        color[4:6],
+        16
+    )
 
     brightness = (
-        red * 299 +
-        green * 587 +
+        red * 299
+        +
+        green * 587
+        +
         blue * 114
     ) / 1000
 
@@ -251,43 +320,45 @@ def refresh_main_window(
 ):
 
     if movements is None:
-        movements = manager.movements
+        movements = (
+            manager.movements
+        )
 
-    table_data, row_colors = movements_table_data(
-        movements
+    table_data, row_colors = (
+        movements_table_data(
+            movements
+        )
     )
 
-    window["__MOVEMENTS__"].update(
+    window[
+        "__MOVEMENTS__"
+    ].update(
         values=table_data,
         row_colors=row_colors
     )
 
-    income = 0
-    expenses = 0
-
-    for movement in movements:
-
-        if movement.movement_type == "Income":
-            income += movement.amount
-
-        elif movement.movement_type == "Expense":
-            expenses += movement.amount
-
-    balance = income - expenses
-
-    window["INCOME_TOTAL"].update(
-        f"Income: ${income}"
+    window[
+        "INCOME_TOTAL"
+    ].update(
+        f"Income: ₡{manager.calculate_income(movements):,.2f}"
     )
 
-    window["EXPENSE_TOTAL"].update(
-        f"Expenses: ${expenses}"
+    window[
+        "EXPENSE_TOTAL"
+    ].update(
+        f"Expenses: ₡{manager.calculate_expense(movements):,.2f}"
     )
 
-    window["BALANCE_TOTAL"].update(
-        f"Balance: ${balance}"
+    window[
+        "BALANCE_TOTAL"
+    ].update(
+        f"Balance: ₡{manager.calculate_balance(movements):,.2f}"
     )
 
-def add_category_window(manager):
+
+def add_category_window(
+    manager
+):
 
     layout = [
 
@@ -334,7 +405,9 @@ def add_category_window(manager):
 
     while True:
 
-        event, values = window.read()
+        event, values = (
+            window.read()
+        )
 
         if event in (
             sg.WIN_CLOSED,
@@ -344,30 +417,20 @@ def add_category_window(manager):
 
         if event == "Save":
 
-            name = (
-                values["CATEGORY_NAME"]
-                .strip()
-            )
-
-            color = (
-                values["CATEGORY_COLOR"]
-                .strip()
-            )
-
             try:
 
-                category = Category(
-                    name,
-                    color
-                )
-
-                manager.add_category(
-                    category
+                manager.create_category(
+                    values[
+                        "CATEGORY_NAME"
+                    ],
+                    values[
+                        "CATEGORY_COLOR"
+                    ]
                 )
 
                 save_categories(
                     manager.categories,
-                    "data/categories.json"
+                    CATEGORIES_FILE
                 )
 
                 sg.popup(
@@ -385,386 +448,158 @@ def add_category_window(manager):
     window.close()
 
 
-def add_expense_window(manager):
-
-    if not manager.categories:
-
-        sg.popup_error(
-            "No categories available"
-        )
-
-        return
-
-    category_names = []
-
-    for category in manager.categories:
-
-        category_names.append(
-            category.name
-        )
-
-    layout = [
-
-        [
-            sg.Text("Title")
-        ],
-
-        [
-            sg.Input(
-                key="EXPENSE_TITLE"
-            )
-        ],
-
-        [
-            sg.Text("Amount")
-        ],
-
-        [
-            sg.Input(
-                key="EXPENSE_AMOUNT"
-            )
-        ],
-
-        [
-            sg.Text("Category")
-        ],
-
-        [
-            sg.Combo(
-                category_names,
-                key="EXPENSE_CATEGORY",
-                readonly=True
-            )
-        ],
-
-        [
-            sg.Text(
-                "Date (dd/mm/yyyy)"
-            )
-        ],
-
-        [
-            sg.Input(
-                key="EXPENSE_DATE"
-            )
-        ],
-
-        [
-            sg.Button("Save"),
-            sg.Button("Cancel")
-        ]
-    ]
-
-    window = sg.Window(
-        "Add Expense",
-        layout
-    )
-
-    while True:
-
-        event, values = window.read()
-
-        if event in (
-            sg.WIN_CLOSED,
-            "Cancel"
-        ):
-            break
-
-        if event == "Save":
-
-            title = (
-                values["EXPENSE_TITLE"]
-                .strip()
-            )
-
-            amount = (
-                values["EXPENSE_AMOUNT"]
-                .strip()
-            )
-
-            category_name = (
-                values["EXPENSE_CATEGORY"]
-            )
-
-            expense_date = (
-                values["EXPENSE_DATE"]
-                .strip()
-            )
-
-            try:
-
-                amount = float(amount)
-
-                selected_category = None
-
-                for category in manager.categories:
-
-                    if (
-                        category.name
-                        == category_name
-                    ):
-
-                        selected_category = (
-                            category
-                        )
-
-                        break
-
-                if selected_category is None:
-
-                    raise ValueError(
-                        "Please select a category"
-                    )
-
-                movement = Movement(
-                    title,
-                    amount,
-                    selected_category,
-                    "Expense",
-                    expense_date
-                )
-
-                manager.add_movement(
-                    movement
-                )
-
-                save_movements(
-                    manager.movements,
-                    "data/movements.json"
-                )
-
-                sg.popup(
-                    "Expense added successfully"
-                )
-
-                break
-
-            except ValueError as error:
-
-                sg.popup_error(
-                    str(error)
-                )
-
-    window.close()
-
-
-def add_income_window(manager):
-
-    if not manager.categories:
-
-        sg.popup_error(
-            "No categories available"
-        )
-
-        return
-
-    category_names = []
-
-    for category in manager.categories:
-
-        category_names.append(
-            category.name
-        )
-
-    layout = [
-
-        [
-            sg.Text("Title")
-        ],
-
-        [
-            sg.Input(
-                key="INCOME_TITLE"
-            )
-        ],
-
-        [
-            sg.Text("Amount")
-        ],
-
-        [
-            sg.Input(
-                key="INCOME_AMOUNT"
-            )
-        ],
-
-        [
-            sg.Text("Category")
-        ],
-
-        [
-            sg.Combo(
-                category_names,
-                key="INCOME_CATEGORY",
-                readonly=True
-            )
-        ],
-
-        [
-            sg.Text(
-                "Date (dd/mm/yyyy)"
-            )
-        ],
-
-        [
-            sg.Input(
-                key="INCOME_DATE"
-            )
-        ],
-
-        [
-            sg.Button("Save"),
-            sg.Button("Cancel")
-        ]
-    ]
-
-    window = sg.Window(
-        "Add Income",
-        layout
-    )
-
-    while True:
-
-        event, values = window.read()
-
-        if event in (
-            sg.WIN_CLOSED,
-            "Cancel"
-        ):
-            break
-
-        if event == "Save":
-
-            title = (
-                values["INCOME_TITLE"]
-                .strip()
-            )
-
-            amount = (
-                values["INCOME_AMOUNT"]
-                .strip()
-            )
-
-            category_name = (
-                values["INCOME_CATEGORY"]
-            )
-
-            income_date = (
-                values["INCOME_DATE"]
-                .strip()
-            )
-
-            try:
-
-                amount = float(amount)
-
-                selected_category = None
-
-                for category in manager.categories:
-
-                    if (
-                        category.name
-                        == category_name
-                    ):
-
-                        selected_category = (
-                            category
-                        )
-
-                        break
-
-                if selected_category is None:
-
-                    raise ValueError(
-                        "Please select a category"
-                    )
-
-                movement = Movement(
-                    title,
-                    amount,
-                    selected_category,
-                    "Income",
-                    income_date
-                )
-
-                manager.add_movement(
-                    movement
-                )
-
-                save_movements(
-                    manager.movements,
-                    "data/movements.json"
-                )
-
-                sg.popup(
-                    "Income added successfully"
-                )
-
-                break
-
-            except ValueError as error:
-
-                sg.popup_error(
-                    str(error)
-                )
-
-    window.close()
-
-def filter_movements(
+def add_movement_window(
     manager,
-    start_date_text,
-    end_date_text
+    movement_type
 ):
 
-    start_date_text = (
-        start_date_text.strip()
-    )
+    if not manager.categories:
 
-    end_date_text = (
-        end_date_text.strip()
-    )
-
-    if not start_date_text:
-        raise ValueError(
-            "Please enter the start date"
+        sg.popup_error(
+            "No categories available"
         )
 
-    if not end_date_text:
-        raise ValueError(
-            "Please enter the end date"
+        return
+
+    if movement_type not in (
+        "Income",
+        "Expense"
+    ):
+
+        sg.popup_error(
+            "Invalid movement type"
         )
 
-    start_date = validate_date(
-        start_date_text
+        return
+
+    category_names = [
+        category.name
+        for category
+        in manager.categories
+    ]
+
+    today = (
+        date.today()
+        .strftime("%d/%m/%Y")
     )
 
-    end_date = validate_date(
-        end_date_text
-    )
+    layout = [
 
-    if start_date > end_date:
+        [
+            sg.Text("Title")
+        ],
 
-        raise ValueError(
-            "Start date cannot be after end date"
-        )
-
-    filtered_movements = []
-
-    for movement in manager.movements:
-
-        if (
-            start_date
-            <= movement.date
-            <= end_date
-        ):
-
-            filtered_movements.append(
-                movement
+        [
+            sg.Input(
+                key="MOVEMENT_TITLE"
             )
+        ],
 
-    return filtered_movements
+        [
+            sg.Text("Amount")
+        ],
 
-def export_csv_window(manager):
+        [
+            sg.Input(
+                key="MOVEMENT_AMOUNT"
+            )
+        ],
+
+        [
+            sg.Text("Category")
+        ],
+
+        [
+            sg.Combo(
+                category_names,
+                key="MOVEMENT_CATEGORY",
+                readonly=True
+            )
+        ],
+
+        [
+            sg.Text(
+                "Date (dd/mm/yyyy)"
+            )
+        ],
+
+        [
+            sg.Input(
+                default_text=today,
+                key="MOVEMENT_DATE"
+            )
+        ],
+
+        [
+            sg.Button("Save"),
+            sg.Button("Cancel")
+        ]
+    ]
+
+    window = sg.Window(
+        f"Add {movement_type}",
+        layout
+    )
+
+    while True:
+
+        event, values = (
+            window.read()
+        )
+
+        if event in (
+            sg.WIN_CLOSED,
+            "Cancel"
+        ):
+            break
+
+        if event == "Save":
+
+            try:
+
+                manager.create_movement(
+                    values[
+                        "MOVEMENT_TITLE"
+                    ],
+
+                    values[
+                        "MOVEMENT_AMOUNT"
+                    ],
+
+                    values[
+                        "MOVEMENT_CATEGORY"
+                    ],
+
+                    movement_type,
+
+                    values[
+                        "MOVEMENT_DATE"
+                    ]
+                )
+
+                save_movements(
+                    manager.movements,
+                    MOVEMENTS_FILE
+                )
+
+                sg.popup(
+                    f"{movement_type} added successfully"
+                )
+
+                break
+
+            except ValueError as error:
+
+                sg.popup_error(
+                    str(error)
+                )
+
+    window.close()
+
+
+def export_csv_window(
+    manager
+):
 
     if not manager.movements:
 
@@ -774,12 +609,17 @@ def export_csv_window(manager):
 
         return
 
-    file_path = sg.popup_get_file(
-        "Save CSV",
-        save_as=True,
-        default_extension=".csv",
-        file_types=(
-            ("CSV Files", "*.csv"),
+    file_path = (
+        sg.popup_get_file(
+            "Save CSV",
+            save_as=True,
+            default_extension=".csv",
+            file_types=(
+                (
+                    "CSV Files",
+                    "*.csv"
+                ),
+            )
         )
     )
 
@@ -789,10 +629,15 @@ def export_csv_window(manager):
     try:
 
         export_movements_to_csv(
+
             manager.movements,
+
             file_path,
+
             manager.calculate_income(),
+
             manager.calculate_expense(),
+
             manager.calculate_balance()
         )
 
@@ -800,11 +645,12 @@ def export_csv_window(manager):
             "CSV exported successfully"
         )
 
-    except Exception as error:
+    except OSError as error:
 
         sg.popup_error(
             f"Could not export CSV:\n{error}"
         )
+
 
 def clear_history(
     manager,
@@ -819,22 +665,22 @@ def clear_history(
 
         return
 
-    confirmation = sg.popup_yes_no(
-        "Are you sure you want to delete "
-        "all movement history?\n\n"
-        "This will delete all incomes and "
-        "expenses.\n"
-        "Categories will NOT be deleted."
+    confirmation = (
+        sg.popup_yes_no(
+            "Are you sure you want to delete all movement history?\n\n"
+            "This will delete all incomes and expenses.\n"
+            "Categories will NOT be deleted."
+        )
     )
 
     if confirmation != "Yes":
         return
 
-    manager.movements.clear()
+    manager.clear_history()
 
     save_movements(
         manager.movements,
-        "data/movements.json"
+        MOVEMENTS_FILE
     )
 
     refresh_main_window(
