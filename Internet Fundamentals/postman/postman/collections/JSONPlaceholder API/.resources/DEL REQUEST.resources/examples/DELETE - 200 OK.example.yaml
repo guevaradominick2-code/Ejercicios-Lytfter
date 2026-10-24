@@ -1,0 +1,33 @@
+$kind: http-example
+request:
+  url: https://jsonplaceholder.typicode.com/posts/1
+  method: DELETE
+response:
+  statusCode: 200
+  statusText: ""
+  headers:
+    :status: "200"
+    date: Sat, 24 Oct 2026 03:05:19 GMT
+    content-type: application/json; charset=utf-8
+    content-length: "2"
+    access-control-allow-credentials: "true"
+    cache-control: no-cache
+    etag: W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
+    expires: "-1"
+    pragma: no-cache
+    vary: Origin, Accept-Encoding
+    x-content-type-options: nosniff
+    x-powered-by: Express
+    x-ratelimit-limit: "3600000"
+    x-ratelimit-remaining: "3599994"
+    x-ratelimit-reset: "1792812236"
+    cf-cache-status: DYNAMIC
+    nel: '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+    report-to: '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=wYYyr%2BcYSEn%2FGl8C8%2FmZxbPTNU9Ya3OZLHesxulhNLNFxXpDe9EEY8%2Fi7GaWvqb9mEdDphHC%2Fj9f%2FxutvyuaQA0ey8pNOK936FOnNxaTI%2F%2B4%2Fz6ZkxAjv21shsd2LlbyQievwco057jqRAr3IhQR"}]}'
+    server: cloudflare
+    cf-ray: a4f5c25aae479838-MIA
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: "{}"
+order: 1000

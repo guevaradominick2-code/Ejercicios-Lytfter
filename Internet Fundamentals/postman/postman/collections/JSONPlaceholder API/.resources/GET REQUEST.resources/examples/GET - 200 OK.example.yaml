@@ -1,0 +1,40 @@
+$kind: http-example
+request:
+  url: https://jsonplaceholder.typicode.com/posts/1
+  method: GET
+response:
+  statusCode: 200
+  statusText: ""
+  headers:
+    :status: "200"
+    date: Sat, 24 Oct 2026 02:53:29 GMT
+    content-type: application/json; charset=utf-8
+    access-control-allow-credentials: "true"
+    cache-control: max-age=43200
+    etag: W/"124-yiKdLzqO5gfBrJFrcdJ8Yq0LGnU"
+    expires: "-1"
+    pragma: no-cache
+    vary: Origin, Accept-Encoding
+    x-content-type-options: nosniff
+    x-powered-by: Express
+    x-ratelimit-limit: "3600000"
+    x-ratelimit-remaining: "3599999"
+    x-ratelimit-reset: "1790812826"
+    age: "3723"
+    report-to: '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=AMcyye573SGj60jnS3wT%2Fq7vP9y2ZDVdByNVwYwLoSQukMTKFEAzm09U%2F0cnX79fTmgAL%2FBMmcm6o1dDoy6htaDvg0AV%2B9MpjT250qhAu0zi66JSOv4kWPUrRtI0vAGxxPnoBsW0A4cnrp3OPCoM"}]}'
+    cf-cache-status: HIT
+    nel: '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+    content-encoding: br
+    server: cloudflare
+    cf-ray: a4f5b100cd4318e5-MIA
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: |-
+      {
+        "userId": 1,
+        "id": 1,
+        "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+        "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+      }
+order: 1000
