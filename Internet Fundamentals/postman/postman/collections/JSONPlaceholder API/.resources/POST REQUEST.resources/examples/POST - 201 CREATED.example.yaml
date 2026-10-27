@@ -1,0 +1,52 @@
+$kind: http-example
+request:
+  url: https://jsonplaceholder.typicode.com/posts
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \  \"title\": \"Mi primera API\",\r
+
+      \  \"body\": \"Estoy aprendiendo a utilizar Postman\",\r
+
+      \  \"userId\": 1\r
+
+      }"
+response:
+  statusCode: 201
+  statusText: ""
+  headers:
+    :status: "201"
+    date: Sat, 24 Oct 2026 02:58:02 GMT
+    content-type: application/json; charset=utf-8
+    content-length: "109"
+    location: https://jsonplaceholder.typicode.com/posts/101
+    access-control-allow-credentials: "true"
+    access-control-expose-headers: Location
+    cache-control: no-cache
+    etag: W/"6d-2otkQMgQOQPb+fAeX8cJUZ0qq/A"
+    expires: "-1"
+    pragma: no-cache
+    vary: Origin, X-HTTP-Method-Override, Accept-Encoding
+    x-content-type-options: nosniff
+    x-powered-by: Express
+    x-ratelimit-limit: "3600000"
+    x-ratelimit-remaining: "3599998"
+    x-ratelimit-reset: "1792812236"
+    cf-cache-status: DYNAMIC
+    nel: '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+    report-to: '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=ATBxryIVzoZ6FbKRpJwG73XU7qcRxWV0mluvoYP3zYU%2BFyVKjmdV8q85DnzhfPUKo02Ivs6dDAe0MQ8lshudNxFuAba3ld51xDtReH4aczTQZT%2FoGaWpQ9ky9%2BeOasNuGQkVTeYS5oTjVwqVsS1r"}]}'
+    server: cloudflare
+    cf-ray: a4f5b7adbfa0f7aa-MIA
+    alt-svc: h3=":443"; ma=86400
+  body:
+    type: json
+    content: |-
+      {
+        "title": "Mi primera API",
+        "body": "Estoy aprendiendo a utilizar Postman",
+        "userId": 1,
+        "id": 101
+      }
+order: 1000
