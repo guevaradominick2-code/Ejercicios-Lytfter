@@ -1,0 +1,5 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts/1
+method: GET
+examples: .resources/GET REQUEST.resources/examples
+order: 1000

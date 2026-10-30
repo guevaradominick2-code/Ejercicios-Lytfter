@@ -1,0 +1,16 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Mi primera API\",\r
+
+    \  \"body\": \"Estoy aprendiendo a utilizar Postman\",\r
+
+    \  \"userId\": 1\r
+
+    }"
+examples: .resources/POST REQUEST.resources/examples
+order: 2000

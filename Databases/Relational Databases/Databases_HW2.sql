@@ -1,0 +1,79 @@
+CREATE TABLE `Products`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Code` VARCHAR(255) NOT NULL,
+    `Name` VARCHAR(255) NOT NULL,
+    `Price` DECIMAL(8, 2) NOT NULL,
+    `Entry_Date` DATE NOT NULL,
+    `Brand` VARCHAR(255) NOT NULL,
+    `Stock_available` INT NOT NULL
+);
+ALTER TABLE
+    `Products` ADD UNIQUE `products_code_unique`(`Code`);
+CREATE TABLE `Invoices`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Invoice_number` INT NOT NULL,
+    `Purchase_date` DATE NOT NULL,
+    `Total_amount` DECIMAL(8, 2) NOT NULL,
+    `user_id` BIGINT NOT NULL,
+    `payment_method_id` BIGINT NOT NULL
+);
+ALTER TABLE
+    `Invoices` ADD UNIQUE `invoices_invoice_number_unique`(`Invoice_number`);
+CREATE TABLE `Products Per Invoice`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `invoice_id` BIGINT NOT NULL,
+    `product_id` BIGINT NOT NULL,
+    `Quantity` INT NOT NULL,
+    `Total_amount` DECIMAL(8, 2) NOT NULL
+);
+CREATE TABLE `Shopping Cart`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `user_id` BIGINT NOT NULL
+);
+ALTER TABLE
+    `Shopping Cart` ADD UNIQUE `shopping cart_user_id_unique`(`user_id`);
+CREATE TABLE `Shopping_Cart_Items`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `cart_id` BIGINT NOT NULL,
+    `product_id` BIGINT NOT NULL,
+    `quantity` INT NOT NULL
+);
+CREATE TABLE `Users`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Full_Name` VARCHAR(255) NOT NULL,
+    `Mail` VARCHAR(255) NOT NULL,
+    `Registration_date` DATE NOT NULL
+);
+ALTER TABLE
+    `Users` ADD UNIQUE `users_mail_unique`(`Mail`);
+CREATE TABLE `Reviews`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `user_Id` BIGINT NOT NULL,
+    `product_id` BIGINT NOT NULL,
+    `Comment` VARCHAR(255) NOT NULL,
+    `Rating` TINYINT NOT NULL COMMENT 'Rating from 1 to 5',
+    `Date` DATE NOT NULL
+);
+CREATE TABLE `Payment_Methods`(
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `Method_type` VARCHAR(255) NOT NULL,
+    `Bank_name` VARCHAR(255) NOT NULL
+);
+ALTER TABLE
+    `Invoices` ADD CONSTRAINT `invoices_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`);
+ALTER TABLE
+    `Products Per Invoice` ADD CONSTRAINT `products per invoice_product_id_foreign` FOREIGN KEY(`product_id`) REFERENCES `Products`(`id`);
+ALTER TABLE
+    `Products` ADD CONSTRAINT `products_id_foreign` FOREIGN KEY(`id`) REFERENCES `Shopping_Cart_Items`(`product_id`);
+ALTER TABLE
+    `Shopping Cart` ADD CONSTRAINT `shopping cart_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`);
+ALTER TABLE
+    `Invoices` ADD CONSTRAINT `invoices_payment_method_id_foreign` FOREIGN KEY(`payment_method_id`) REFERENCES `Payment_Methods`(`id`);
+ALTER TABLE
+    `Products Per Invoice` ADD CONSTRAINT `products per invoice_invoice_id_foreign` FOREIGN KEY(`invoice_id`) REFERENCES `Invoices`(`Invoice_number`);
+ALTER TABLE
+    `Reviews` ADD CONSTRAINT `reviews_user_id_foreign` FOREIGN KEY(`user_Id`) REFERENCES `Users`(`id`);
+ALTER TABLE
+    `Reviews` ADD CONSTRAINT `reviews_product_id_foreign` FOREIGN KEY(`product_id`) REFERENCES `Products`(`id`);
+ALTER TABLE
+    `Shopping Cart` ADD CONSTRAINT `shopping cart_id_foreign` FOREIGN KEY(`id`) REFERENCES `Shopping_Cart_Items`(`cart_id`);
